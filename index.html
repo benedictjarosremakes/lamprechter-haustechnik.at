@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lamprechter Haustechnik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --color-bg: #F4F5F7;
+  --color-surface: #FFFFFF;
+  --color-text: #1A202C;
+  --color-text-muted: #718096;
+  --color-accent: #0056B3;
+  --color-accent-light: #DD6B20;
+  --color-dark: #1A202C;
+  
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  
+  --text-xs:   clamp(0.75rem,  1.5vw, 0.875rem);
+  --text-sm:   clamp(0.875rem, 1.8vw, 1rem);
+  --text-base: clamp(1rem,     2vw,   1.125rem);
+  --text-lg:   clamp(1.125rem, 2.5vw, 1.375rem);
+  --text-xl:   clamp(1.375rem, 3vw,   1.75rem);
+  --text-2xl:  clamp(1.75rem,  4vw,   2.5rem);
+  --text-3xl:  clamp(2.25rem,  5vw,   3.5rem);
+  --text-4xl:  clamp(3rem,     7vw,   4.5rem);
+  
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  
+  --section-padding: clamp(4rem, 10vw, 8rem);
+  
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 500;
+  --z-modal: 1000;
+  --z-toast: 2000;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+a { color: inherit; text-decoration: none; transition: color 0.2s ease; }
+img { max-width: 100%; height: auto; display: block; }
+ul { list-style: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+/* Icons */
+[data-lucide] {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  line-height: 1;
+  pointer-events: none;
+}
+.icon-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+}
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: var(--color-accent);
+  color: #fff;
+  padding: var(--space-2) var(--space-4);
+  z-index: var(--z-toast);
+}
+.skip-link:focus { top: 0; }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: var(--text-base);
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: var(--z-raised);
+}
+.btn-primary {
+  background-color: var(--color-accent);
+  color: #fff;
+}
+.btn-primary:hover {
+  background-color: #004494;
+}
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-text-muted);
+}
+.btn-secondary:hover {
+  border-color: var(--color-text);
+}
+
+/* Scroll Reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* Header & Nav */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.logo {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-xl);
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.desktop-nav { display: none; }
+@media (min-width: 769px) {
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+  .desktop-nav a {
+    font-weight: 500;
+    font-size: var(--text-sm);
+    color: var(--color-text);
+  }
+  .desktop-nav a:hover { color: var(--color-accent); }
+}
+
+/* Mobile Nav */
+.nav-toggle {
+  display: block;
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1002;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+}
+@media (min-width: 769px) {
+  .nav-toggle { display: none; pointer-events: none; }
+}
+.hamburger {
+  position: relative;
+  width: 24px;
+  height: 18px;
+}
+.hamburger span {
+  position: absolute;
+  left: 0;
+  width: 24px;
+  height: 2px;
+  background-color: var(--color-text);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hamburger span:nth-child(1) { top: 0; }
+.hamburger span:nth-child(2) { top: 8px; }
+.hamburger span:nth-child(3) { top: 16px; }
+
+.nav-toggle[aria-expanded="true"] .hamburger span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] .hamburger span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.nav-toggle[aria-expanded="true"] .hamburger span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.mobile-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+}
+.mobile-nav-links a {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  padding: var(--space-2) var(--space-4);
+}
+
+/* Hero Section */
+.hero {
+  min-height: 100vh;
+  padding-top: 80px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+  align-items: center;
+}
+@media (min-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+  }
+}
+.hero-content {
+  max-width: 600px;
+  padding: var(--space-8) 0;
+}
+.hero h1 {
+  font-size: var(--text-4xl);
+  margin-bottom: var(--space-6);
+}
+.hero p {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-8);
+}
+.hero-image-wrapper {
+  position: relative;
+  height: 50vh;
+  min-height: 400px;
+  width: 100%;
+}
+@media (min-width: 1024px) {
+  .hero-image-wrapper {
+    height: calc(100vh - 80px);
+    position: absolute;
+    right: 0;
+    top: 80px;
+    width: 50vw;
+  }
+}
+.hero-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Trust Band */
+.trust-band {
+  background-color: var(--color-surface);
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.trust-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-12);
+  flex-wrap: wrap;
+  opacity: 0.6;
+  filter: grayscale(100%);
+}
+.trust-logos img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Services */
+.section {
+  padding: var(--section-padding) 0;
+}
+.section-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto var(--space-16);
+}
+.section-header h2 {
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-4);
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+}
+@media (min-width: 768px) {
+  .services-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.service-card {
+  background: var(--color-surface);
+  padding: var(--space-8);
+  border-top: 3px solid transparent;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-top-color: var(--color-accent);
+}
+.service-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(0, 86, 179, 0.1);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin-bottom: var(--space-6);
+}
+.service-card h3 {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-3);
+}
+.service-card p {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+}
+
+/* Future Tech (Offset Layout) */
+.tech-section {
+  background-color: var(--color-dark);
+  color: var(--color-surface);
+  padding: var(--section-padding) 0;
+}
+.tech-section h2 { color: var(--color-surface); }
+.tech-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+  align-items: center;
+}
+@media (min-width: 1024px) {
+  .tech-grid {
+    grid-template-columns: 5fr 7fr;
+    gap: var(--space-16);
+  }
+}
+.tech-content p {
+  color: #A0AEC0;
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-8);
+}
+.tech-image {
+  position: relative;
+  height: 400px;
+  width: 100%;
+}
+@media (min-width: 1024px) {
+  .tech-image { height: 600px; margin-right: -10vw; }
+}
+.tech-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Testimonials */
+.testimonials {
+  background-color: var(--color-surface);
+}
+.testi-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+}
+@media (min-width: 768px) {
+  .testi-grid { grid-template-columns: 1fr 1fr; }
+}
+.testi-card {
+  background: var(--color-bg);
+  padding: var(--space-8);
+  border-radius: 2px;
+}
+.stars {
+  color: var(--color-accent-light);
+  margin-bottom: var(--space-4);
+  display: flex;
+  gap: 2px;
+}
+.testi-text {
+  font-size: var(--text-base);
+  font-style: italic;
+  margin-bottom: var(--space-6);
+  color: var(--color-text);
+}
+.testi-author {
+  font-weight: 500;
+  font-family: var(--font-heading);
+}
+
+/* Contact Section */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+}
+@media (min-width: 1024px) {
+  .contact-grid { grid-template-columns: 1fr 1fr; gap: var(--space-24); }
+}
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+.contact-item i {
+  color: var(--color-accent);
+  margin-top: 4px;
+}
+.contact-item h4 {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-1);
+}
+.contact-item p {
+  color: var(--color-text-muted);
+}
+
+.contact-form {
+  background: var(--color-surface);
+  padding: var(--space-8);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+.form-group {
+  margin-bottom: var(--space-4);
+}
+.form-label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  margin-bottom: var(--space-2);
+}
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #E2E8F0;
+  border-radius: 2px;
+  font-family: inherit;
+  font-size: var(--text-base);
+  transition: border-color 0.2s ease;
+}
+.form-control:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+.checkbox-group {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin: var(--space-6) 0;
+}
+.checkbox-group input[type="checkbox"] {
+  margin-top: 4px;
+  width: 16px;
+  height: 16px;
+}
+.checkbox-group label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Footer */
+.site-footer {
+  background-color: var(--color-dark);
+  color: #A0AEC0;
+  padding: clamp(4rem, 8vw, 7rem) 0 2rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+  margin-bottom: var(--space-12);
+}
+@media (min-width: 768px) {
+  .footer-grid { grid-template-columns: 2fr 1fr 1fr; }
+}
+.footer-brand h3 {
+  color: var(--color-surface);
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-4);
+}
+.footer-social {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+.footer-social a {
+  color: #A0AEC0;
+}
+.footer-social a:hover {
+  color: var(--color-surface);
+}
+.footer-col h4 {
+  color: var(--color-surface);
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-6);
+}
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.footer-links button, .footer-links a {
+  color: #A0AEC0;
+  text-align: left;
+  font-size: var(--text-base);
+}
+.footer-links button:hover, .footer-links a:hover {
+  color: var(--color-surface);
+}
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .footer-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  background: rgba(26, 32, 44, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.modal-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+.modal-card {
+  background: var(--color-surface);
+  width: 100%;
+  max-width: 480px;
+  padding: var(--space-8);
+  border-radius: 2px;
+  position: relative;
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+.modal-overlay.is-open .modal-card {
+  transform: translateY(0);
+}
+.modal-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  color: var(--color-text-muted);
+  padding: var(--space-1);
+}
+.modal-close:hover { color: var(--color-text); }
+.modal-title {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-4);
+  padding-right: var(--space-8);
+}
+.modal-body {
+  margin-bottom: var(--space-6);
+  color: var(--color-text-muted);
+}
+.modal-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+.modal-links a {
+  color: var(--color-accent);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Cookie Banner */
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  padding: var(--space-6);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  z-index: var(--z-toast);
+  transform: translateY(100%);
+  transition: transform 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.cookie-banner.is-visible {
+  transform: translateY(0);
+}
+@media (min-width: 768px) {
+  .cookie-banner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-8);
+  }
+}
+.cookie-text p {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+.cookie-actions {
+  display: flex;
+  gap: var(--space-4);
+}
+</style>
+</head>
+<body>
+<!-- DEMO NOTICE BANNER - benedictjaros.com -->
+<style>
+#__demo_spacer{display:block;}
+#__demo_notice,#__demo_notice *{box-sizing:border-box;margin:0;padding:0;}
+#__demo_notice{
+  position:fixed;top:0;left:0;right:0;z-index:99999;
+  background:rgba(9,9,11,.97);
+  backdrop-filter:blur(14px) saturate(160%);
+  -webkit-backdrop-filter:blur(14px) saturate(160%);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  font-family:system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+}
+#__demo_inner{
+  max-width:1280px;margin:0 auto;
+  padding:0 44px 0 18px;min-height:38px;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+#__demo_dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:#f5c842;box-shadow:0 0 7px rgba(245,200,66,.55);}
+#__demo_label{color:#f5c842;font-weight:700;font-size:10px;letter-spacing:.12em;text-transform:uppercase;flex-shrink:0;}
+#__demo_divider{color:rgba(255,255,255,.15);font-size:12px;flex-shrink:0;}
+#__demo_text{color:rgba(255,255,255,.45);font-size:11.5px;line-height:1.45;flex:1 1 160px;}
+#__demo_links{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+#__demo_links a{
+  color:rgba(255,255,255,.38);font-size:11px;text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,.14);
+  transition:color .15s,border-color .15s;white-space:nowrap;
+}
+#__demo_links a:hover{color:rgba(255,255,255,.75);border-color:rgba(255,255,255,.4);}
+#__demo_link_sep{color:rgba(255,255,255,.15);font-size:10px;}
+#__demo_close{
+  position:absolute;right:0;top:0;bottom:0;width:40px;
+  background:none;border:none;cursor:pointer;
+  color:rgba(255,255,255,.28);font-size:16px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  transition:color .15s;
+}
+#__demo_close:hover{color:rgba(255,255,255,.7);}
+@media(max-width:560px){
+  #__demo_inner{padding:7px 44px 7px 14px;gap:6px;}
+  #__demo_text{font-size:11px;flex:1 1 100%;order:3;}
+  #__demo_dot,#__demo_label{order:1;}
+  #__demo_divider{order:2;}
+  #__demo_links{order:4;}
+}
+</style>
+<div id="__demo_spacer"></div>
+<div id="__demo_notice" role="banner" aria-label="Demo notice">
+  <div id="__demo_inner">
+    <span id="__demo_dot"></span>
+    <span id="__demo_label">Demo</span>
+    <span id="__demo_divider">/</span>
+    <span id="__demo_text">Unofficial remake &mdash; not the real website. All content &amp; trademarks belong to their owners.</span>
+    <div id="__demo_links">
+      <a href="https://benedictjaros.com/impressum" target="_blank" rel="noopener noreferrer">Impressum</a>
+      <span id="__demo_link_sep">&middot;</span>
+      <a href="https://benedictjaros.com/datenschutz" target="_blank" rel="noopener noreferrer">Datenschutz</a>
+    </div>
+  </div>
+  <button id="__demo_close" aria-label="Close demo notice">&#x2715;</button>
+</div>
+<script>
+(function () {
+  var spacer = document.getElementById('__demo_spacer');
+  var b = document.getElementById('__demo_notice');
+  var x = document.getElementById('__demo_close');
+  if (!b || !spacer) return;
+  function sync() { spacer.style.height = b.offsetHeight + 'px'; }
+  function hide() {
+    b.style.display = 'none'; spacer.style.height = '0';
+    try { sessionStorage.setItem('__demo_closed', '1'); } catch (e) {}
+  }
+  try { if (sessionStorage.getItem('__demo_closed')) { b.style.display = 'none'; spacer.style.height = '0'; return; } } catch (e) {}
+  sync();
+  window.addEventListener('resize', function () { if (b.style.display !== 'none') sync(); });
+  if (x) x.addEventListener('click', hide);
+}());
+</script>
+
+
+<a href="#main" class="skip-link">Zum Inhalt springen</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#" class="logo">Lamprechter</a>
+    
+    <nav class="desktop-nav">
+      <a href="#leistungen">Leistungen</a>
+      <a href="#zukunft">Technologie</a>
+      <a href="#bewertungen">Bewertungen</a>
+      <button class="btn btn-primary trigger-placeholder" data-modal-title="Job Applications">Jobs</button>
+      <a href="#kontakt" class="btn btn-secondary">Kontakt</a>
+    </nav>
+
+    <button class="nav-toggle" aria-expanded="false" aria-label="Menü öffnen" id="navToggle">
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-overlay" id="mobileOverlay">
+  <nav class="mobile-nav-links">
+    <a href="#leistungen" class="mobile-link">Leistungen</a>
+    <a href="#zukunft" class="mobile-link">Technologie</a>
+    <a href="#bewertungen" class="mobile-link">Bewertungen</a>
+    <button class="mobile-link trigger-placeholder" data-modal-title="Job Applications">Jobs</button>
+    <a href="#kontakt" class="mobile-link">Kontakt</a>
+  </nav>
+</div>
+
+<main id="main">
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content reveal">
+        <h1>Installateur in Salzburg für moderne Haustechnik und zuverlässige Lösungen</h1>
+        <p>Als Installateur in Salzburg bieten wir Ihnen maßgeschneiderte Lösungen rund um Heizung, Sanitär und alternative Energien. Von der ersten Beratung bis zur fertigen Umsetzung erhalten Sie alles aus einer Hand – zuverlässig, sauber und termingerecht.</p>
+        <a href="#kontakt" class="btn btn-primary icon-text">
+          Kontaktieren Sie uns <i data-lucide="arrow-right"></i>
+        </a>
+      </div>
+    </div>
+    <div class="hero-image-wrapper reveal" style="--i:1">
+      <img src="https://www.lamprechter-haustechnik.at/uploads/wksvbom3/bg5__msi___jpg.jpg" alt="Gebäudeaußenansicht Lamprechter Haustechnik" fetchpriority="high">
+    </div>
+  </section>
+
+  <div class="trust-band">
+    <div class="container trust-logos reveal">
+      <img src="https://www.lamprechter-haustechnik.at/uploads/LukAd5rQ/ETA_Heizkessel1__msi___png.png" alt="ETA Partner">
+      <img src="https://www.lamprechter-haustechnik.at/uploads/OEgG44gs/BWT-AG-Logo__msi___jpeg.jpeg" alt="BWT Partner">
+    </div>
+  </div>
+
+  <section id="leistungen" class="section container">
+    <div class="section-header reveal">
+      <h2>Unsere Kernkompetenzen</h2>
+      <p>Präzise Handwerkskunst gepaart mit modernster Technik für Ihr Zuhause.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal" style="--i:0">
+        <div class="service-icon"><i data-lucide="flame"></i></div>
+        <h3>Heizung</h3>
+        <p>Effiziente Heizsysteme für nachhaltige Wärme und maximale Energieeinsparung.</p>
+      </div>
+      <div class="service-card reveal" style="--i:1">
+        <div class="service-icon"><i data-lucide="wind"></i></div>
+        <h3>Wärmepumpen</h3>
+        <p>Moderne Lösungen wie Wärmepumpe und Solartechnik für umweltfreundliches Wohnen.</p>
+      </div>
+      <div class="service-card reveal" style="--i:2">
+        <div class="service-icon"><i data-lucide="droplets"></i></div>
+        <h3>Bad & Sanitär</h3>
+        <p>Individuelle Bäder und Sanitärlösungen für Komfort und Wohlbefinden.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="zukunft" class="tech-section">
+    <div class="container tech-grid">
+      <div class="tech-content reveal">
+        <h2>Heiztechnik und alternative Energien für die Zukunft</h2>
+        <p>Ob Gas- und Ölkesseltausch, Pelletsheizung, Wärmepumpe oder Solartechnik: Wir setzen auf moderne Systeme, die Leistung, Effizienz und Zukunftssicherheit verbinden.</p>
+        <button class="btn btn-primary trigger-placeholder" data-modal-title="Beratungstermin vereinbaren">Mehr erfahren</button>
+      </div>
+      <div class="tech-image reveal" style="--i:1">
+        <img src="https://www.lamprechter-haustechnik.at/uploads/ECMuQzC5/produktset-wlw186i-ar_812__msi___jpg.jpg" alt="Moderne Buderus Wärmepumpe" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section id="bewertungen" class="section testimonials container">
+    <div class="section-header reveal">
+      <h2>Was unsere Kunden sagen</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal" style="--i:0">
+        <div class="stars">
+          <i data-lucide="star" fill="currentColor"></i><i data-lucide="star" fill="currentColor"></i><i data-lucide="star" fill="currentColor"></i><i data-lucide="star" fill="currentColor"></i><i data-lucide="star" fill="currentColor"></i>
+        </div>
+        <p class="testi-text">"Besser geht's nicht!!! Die Firma Lamprechter hat meine alte Ölheizung durch eine Wärmepumpenheizung ausgetauscht Pünktlich, verlässlich, fachlich hervorragend..."</p>
+        <p class="testi-author">— Gerald Sturmayr</p>
+      </div>
+      <div class="testi-card reveal" style="--i:1">
+        <div class="stars">
+          <i data-lucide="star" fill="currentColor"></i><i data-lucide="star" fill="currentColor"></i><i data-lucide="star" fill="currentColor"></i><i data-lucide="star" fill="currentColor"></i><i data-lucide="star" fill="currentColor"></i>
+        </div>
+        <p class="testi-text">"Wir haben binnen 3 Tagen eine neue Gasheizung bekommen, und das noch in der letzten Woche vor Weihnachten..."</p>
+        <p class="testi-author">— Sacher Brigitte</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt" class="section container">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h2>Kontaktieren Sie uns</h2>
+        <p>Haben Sie Fragen zu unseren Leistungen oder planen Sie ein Projekt? Wir sind für Sie da.</p>
+        
+        <div class="contact-item">
+          <i data-lucide="map-pin"></i>
+          <div>
+            <h4>Adresse</h4>
+            <p>Kellerstraße 31a<br>5082 Grödig</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i data-lucide="phone"></i>
+          <div>
+            <h4>Telefon</h4>
+            <p>+43 6246 73 306</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i data-lucide="mail"></i>
+          <div>
+            <h4>E-Mail</h4>
+            <p>haustechnik@lamprechter.co.at</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="contact-form reveal" style="--i:1">
+        <form id="contactForm" onsubmit="event.preventDefault();">
+          <div class="form-group">
+            <label class="form-label" for="name">Name</label>
+            <input type="text" id="name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">E-Mail</label>
+            <input type="email" id="email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="message">Nachricht</label>
+            <textarea id="message" class="form-control" required></textarea>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="gdpr" required>
+            <label for="gdpr">Es werden personenbezogene Daten übermittelt und für die in der Datenschutzerklärung beschriebenen Zwecke verwendet. *</label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-submit" id="submitBtn" disabled>Nachricht senden</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Lamprechter</h3>
+        <p>Ihr Installateur in Salzburg für moderne Haustechnik und zuverlässige Lösungen mit Handschlagqualität.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <div class="footer-links">
+          <a href="#leistungen">Leistungen</a>
+          <a href="#zukunft">Technologie</a>
+          <a href="#bewertungen">Bewertungen</a>
+          <a href="#kontakt">Kontakt</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Rechtliches</h4>
+        <div class="footer-links">
+          <button class="trigger-legal">Impressum</button>
+          <button class="trigger-legal">Datenschutz</button>
+          <button class="trigger-legal">AGB</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Lamprechter Haustechnik GmbH — All original content, images & trademarks are property of their respective owners. Website rebuilt by Benedict Jaros.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Placeholder Modal -->
+<div class="modal-overlay" id="placeholderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-card">
+    <button class="modal-close" aria-label="Schließen"><i data-lucide="x"></i></button>
+    <h3 class="modal-title" id="modalTitle">Feature</h3>
+    <p class="modal-body">This feature will be live once the website is launched and configured. Contact us in the meantime — we'd love to hear from you.</p>
+    <button class="btn btn-primary modal-close-btn">Schließen</button>
+  </div>
+</div>
+
+<!-- Legal Demo Modal -->
+<div class="modal-overlay" id="legalModal" role="dialog" aria-modal="true" aria-labelledby="legalModalTitle">
+  <div class="modal-card">
+    <button class="modal-close" aria-label="Schließen"><i data-lucide="x"></i></button>
+    <h3 class="modal-title" id="legalModalTitle">Rechtliche Hinweise</h3>
+    <p class="modal-body">Diese Website ist ein Demo-Remake und wurde nicht von oder für das Unternehmen erstellt. Die Inhalte dienen ausschließlich Demonstrationszwecken. Für unsere eigenen rechtlichen Informationen:</p>
+    <div class="modal-links">
+      <a href="https://benedictjaros.com/impressum" target="_blank">Impressum <i data-lucide="external-link" style="width:14px;height:14px;"></i></a>
+      <a href="https://benedictjaros.com/datenschutz" target="_blank">Datenschutz <i data-lucide="external-link" style="width:14px;height:14px;"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- Cookie Banner -->
+<div class="cookie-banner" id="cookieBanner">
+  <div class="cookie-text">
+    <p>Wir verwenden Cookies, um unsere Website und unseren Service zu optimieren.</p>
+  </div>
+  <div class="cookie-actions">
+    <button class="btn btn-secondary" id="cookieDecline">Notwendige Cookies</button>
+    <button class="btn btn-primary" id="cookieAccept">Alle akzeptieren</button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // Initialize Icons
+  lucide.createIcons();
+
+  // Mobile Navigation
+  const navToggle = document.getElementById('navToggle');
+  const mobileOverlay = document.getElementById('mobileOverlay');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+  const body = document.body;
+
+  function toggleMenu() {
+    const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+    navToggle.setAttribute('aria-expanded', !isExpanded);
+    mobileOverlay.classList.toggle('is-open');
+    body.style.overflow = isExpanded ? '' : 'hidden';
+  }
+
+  navToggle.addEventListener('click', toggleMenu);
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if(mobileOverlay.classList.contains('is-open')) toggleMenu();
+    });
+  });
+
+  // Scroll Reveal
+  const observerOptions = { threshold: 0.12, rootMargin: "0px 0px -50px 0px" };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Modals
+  function setupModal(modalId, triggersClass) {
+    const modal = document.getElementById(modalId);
+    const triggers = document.querySelectorAll(triggersClass);
+    const closeBtns = modal.querySelectorAll('.modal-close, .modal-close-btn');
+    const titleEl = modal.querySelector('.modal-title');
+
+    function openModal(e) {
+      if(e) {
+        const title = e.currentTarget.getAttribute('data-modal-title');
+        if(title && titleEl && modalId === 'placeholderModal') titleEl.textContent = title;
+      }
+      modal.classList.add('is-open');
+      body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-open');
+      body.style.overflow = '';
+    }
+
+    triggers.forEach(t => t.addEventListener('click', openModal));
+    closeBtns.forEach(b => b.addEventListener('click', closeModal));
+    modal.addEventListener('click', (e) => {
+      if(e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+  }
+
+  setupModal('placeholderModal', '.trigger-placeholder');
+  setupModal('legalModal', '.trigger-legal');
+
+  // Form Validation
+  const gdprCheckbox = document.getElementById('gdpr');
+  const submitBtn = document.getElementById('submitBtn');
+  if(gdprCheckbox && submitBtn) {
+    gdprCheckbox.addEventListener('change', (e) => {
+      submitBtn.disabled = !e.target.checked;
+    });
+  }
+
+  // Cookie Banner
+  const cookieBanner = document.getElementById('cookieBanner');
+  const btnAccept = document.getElementById('cookieAccept');
+  const btnDecline = document.getElementById('cookieDecline');
+
+  if (!localStorage.getItem('cookie_consent')) {
+    setTimeout(() => {
+      cookieBanner.classList.add('is-visible');
+    }, 1000);
+  }
+
+  function handleCookieChoice(choice) {
+    localStorage.setItem('cookie_consent', choice);
+    cookieBanner.classList.remove('is-visible');
+  }
+
+  btnAccept.addEventListener('click', () => handleCookieChoice('accepted'));
+  btnDecline.addEventListener('click', () => handleCookieChoice('declined'));
+
+</script>
+</body>
+</html>
